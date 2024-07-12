@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+    <title>fds-image-editor-sam</title>
+    <meta charset="UTF-8">
+    <script src="https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-button/dist/fds-image-editor-button.js"></script>
+    <script src="https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-toggle/dist/fds-image-editor-toggle.js"></script>
+    <script src="https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-image-editor-progress-bar/dist/fds-image-editor-progress-bar.js"></script>
+
+    <script src="https://flyingdogsoftware.github.io/gyre-ui-dist/dist/node_modules/%40fds-components/fds-ai-image-editor/dist/fds-ai-image-editor.js?1"></script>
+    <script src="https://flyingdogsoftware.github.io/gyre-ui-dist/dist/fds-image-editor-canvas.js"></script>
+
+    <script src="fds-image-editor-sam.js"></script>
+
+
+    <style>
+        body {
+            font-size: 12px;
+            background-color: #1d1d1d;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, "Segoe UI", Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            color: white;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+    </style>
+<body>
+<h1>fds-image-editor-sam</h1>
+subTool: <button onclick="setMode('points')">points</button><button onclick="setMode('rect')">rect</button>
+<fds-image-editor-test-env image_url="example.webp" id="stage"></fds-image-editor-test-env>
+<script>
+    function setMode(subTool) {
+        stage.activateTool("fds-image-editor-sam",subTool)
+    }
+    document.addEventListener("DOMContentLoaded", async function() {
+        const stage = document.getElementById('stage')
+        globalThis.gyre.registerPlugin("fds-image-editor-sam",{type:"tool",floatingToolBar:true,floatingToolBarWidth:425,
+        icons: {
+            "eye": {
+                body: '<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/></svg>'
+            }
+        }
+
+
+        })
+        stage.activateTool("fds-image-editor-sam","rect")
+        setTimeout(async () => {
+
+        window.postMessageAdapter.init('http://127.0.0.1:8188');
+        })
+        console.log(window.postMessageAdapter)
+
+
+    })
+</script>
+
+</body>
+
+</html>
