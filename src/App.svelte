@@ -94,6 +94,7 @@
                 alert("Only avalaible in main app")
             } else {
                 gyre.layerManager.addLayer(newLayer)     
+                gyre.refresh()
             }
 
         }
@@ -101,6 +102,8 @@
             showProgress=true
             await tick()
             let callBack_files = async (callbacktype,name,v2,v3,v4) => {    // callback for getting files from mappings
+
+                console.log(callbacktype,name)
                 if (callbacktype==="getLayerImage" && name==="currentLayer") {
                     return await gyre.imageAPI.urlToBase64(gyre.paletteValues.selectedLayer.url)
                 }
@@ -128,12 +131,12 @@
             let callback_finished = async (result) => {
                         showProgress=false
                         let img=result[0].mime+";charset=utf-8;base64,"+result[0].base64
-                        tmpMask= await gyre.imageAPI.toRed(img)
+                        tmpMask= await gyre.imageAPI.setColorPreserveAlpha(img,255,0,0)
                         segImage=result[1].mime+";charset=utf-8;base64,"+result[1].base64
                         tool_layer.componentToolbar.showImageButtons=true
                         tool_layer.componentToolbar.refresh()
             }            
-            await gyre.ComfyUI.executeWorkflow(workflowName, callback_finished, callBack_files,formData,callback_error)
+            await gyre.ComfyUI.executeWorkflow(workflowName, callback_finished, callBack_files,data,callback_error)
 
         }
        
@@ -143,8 +146,7 @@
             refresh()
             return false
         }
-        let coords=canvas.mouseCoords(e,loiBackDIV)
-        console.log(tool_layer.pointMode)
+        let coords=canvas.mouseCoords(e)
         let label=0
         if (!tool_layer.pointMode) label=1
         tool_layer.points.push({ x: parseInt(coords.x), y: parseInt(coords.y), label })
@@ -158,13 +160,11 @@
         e.stopPropagation(true)
         refresh()
     }
-let loiBackDIV
 
 </script>
 {#if canvasWidthZoomed}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <div
-        bind:this={loiBackDIV}
         class="loiPointsBack"
         class:checkerBoard={tool_layer.previewResult}
         style="width:{canvasWidthZoomed}px;height:{canvasHeightZoomed}px;touch-action:pan-x pan-y;"
