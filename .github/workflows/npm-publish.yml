@@ -18,6 +18,8 @@ jobs:
           node-version: 16
           registry-url: https://registry.npmjs.org/
           cache: 'npm'
+      - name: List files
+        run: ls -la
       - name: Check for package-lock.json
         run: test -f package-lock.json && echo "package-lock.json exists" || echo "package-lock.json does not exist"
       - run: npm cache clean --force
