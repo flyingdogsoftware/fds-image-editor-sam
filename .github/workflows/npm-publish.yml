@@ -3,6 +3,7 @@ name: Node.js Package
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,13 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.0.0'
           registry-url: https://registry.npmjs.org/
-          cache: 'npm'
+      - name: Install npm@9.6.4
+        run: npm install -g npm@9.6.4
       - name: Log Node.js version
         run: node -v
       - name: Log npm version
