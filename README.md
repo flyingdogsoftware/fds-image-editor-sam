@@ -1,15 +1,15 @@
 # fds-image-editor-sam
 
-
+SAM Tools Plugin for Gyre application. 
 
 ## Installation
 npm i @fds-components/fds-image-editor-sam
 
 
 
-## Usage 
-Use registerPlugin() function from Gyre test environment.
-
+## Usage in test environment
+<code>npm run dev</code>
+Navigate to: http://localhost:4010
 
 
 ### Props
