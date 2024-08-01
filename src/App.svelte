@@ -2,9 +2,7 @@
 <script>
     import { onMount, tick } from "svelte"
 
-   // let path = fdsHelper.get_href()
-    // import {get_current_component} from "svelte/internal"
-   // let host = get_current_component()
+    // needed otherwise it will be not availabe in bundle
     // eslint-disable-next-line no-unused-vars
     import Dialog from './Dialog.svelte'
 
@@ -74,8 +72,8 @@
             return
         }
         if (type==="settings") {
-            if (!gyre.openDialog) return; // dialogs only in full application
-            gyre.openDialog("fds-image-editor-sam box",formData,"Settings")
+            if (!gyre.openDialog) return;
+            gyre.openDialog("fds-image-editor-sam box",formData,"Settings",(newData) => {formData=newData })
         }
         if (type==="setMask" && tmpMask) {      // set (inpainting) default mask
             gyre.maskManager.loadMask(tmpMask)

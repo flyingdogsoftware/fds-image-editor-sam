@@ -68,7 +68,13 @@ export default {
         }),
         css({ output: 'bundle.css' }),
 
-
+        copy({
+            targets: [
+                {src: "src/index.html", dest: "dist"},
+                {src: "src/example.webp", dest: "dist"},
+            ],
+            verbose: true
+        }),
 
             // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
