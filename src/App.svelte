@@ -121,7 +121,7 @@
             let workflowName 
             if (globalThis.gyre.selectedTool.subTool  !== 'points') workflowName = "fds-image-editor-sam box"
             else workflowName = "fds-image-editor-sam points"
-            let data=JSON.parse(JSON.stringify(formData))
+            let data=gyre.ComfyUI.convertFormData(formData)
             data.currentLayer="empty"   // !important: set default empty values for files for calling callbacks
             data.json_file="empty"
             if (!data.erode_kernel_size) data.erode_kernel_size=3
