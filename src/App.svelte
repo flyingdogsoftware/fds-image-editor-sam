@@ -59,6 +59,14 @@
     let segImage
     let showProgress
     let formData={}
+    function makeEven(number) {
+    // If the number is odd, add 1 to make it even
+    if (number % 2 !== 0) {
+        number += 1;
+    }
+    return number;
+}
+
     export async function action(type) {
         if (!globalThis.gyre || !globalThis.gyre.canvas) return
         let gyre= globalThis.gyre
@@ -124,8 +132,11 @@
             let data=gyre.ComfyUI.convertFormData(formData)
             data.currentLayer="empty"   // !important: set default empty values for files for calling callbacks
             data.json_file="empty"
-            if (!data.erode_kernel_size) data.erode_kernel_size=3
-            if (!data.dilate_kernel_size) data.dilate_kernel_size=3
+            if (!data.erode_kernel_size) data.erode_kernel_size=4
+            if (!data.dilate_kernel_size) data.dilate_kernel_size=4
+            data.erode_kernel_size=makeEven(data.erode_kernel_size)
+            data.dilate_kernel_size=makeEven(data.dilate_kernel_size)
+
             let callback_finished = async (result) => {
                         showProgress=false
                         let img=result[0].mime+";charset=utf-8;base64,"+result[0].base64
