@@ -87,6 +87,7 @@
             gyre.maskManager.loadMask(tmpMask)
         }
         if (type==="loadImage" && segImage) {   // add new image layer here
+            
             let newLayer = {
                 type: 'image',
                 name: 'AutoMatte',
@@ -96,6 +97,7 @@
                 height: gyre.canvas.height,
                 url: segImage
             }
+            newLayer=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayer)
             if (!gyre.layerManager) {
                 alert("Only avalaible in main app")
             } else {
