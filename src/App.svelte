@@ -103,12 +103,13 @@
                 gyre.layerManager.addLayer(newLayer)    
                 let newLayerMask = {
                     type: "mask",
+                    name: "SAM Mask",
                     ref: newLayer.id,
                     refType: "moveTool",
                     visible: true,
                     id: gyre.layerManager.maxId()+1
                 }   
-                newLayerMask=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayer)
+                newLayerMask=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayerMask)
                 newLayer.children=[newLayerMask]
                 gyre.refresh()
             }
