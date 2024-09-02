@@ -56,6 +56,7 @@
         tool_layer=tool_layer  
     }
     let tmpMask
+    let mask
     let segImage
     let showProgress
     let formData={}
@@ -108,7 +109,7 @@
                     refType: "moveTool",
                     visible: true,
                     id: gyre.layerManager.maxId()+1,
-                    url: tmpMask
+                    url: mask
                 }   
                 newLayerMask=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayerMask)
                 newLayer.children=[newLayerMask]
@@ -152,6 +153,7 @@
             let callback_finished = async (result) => {
                         showProgress=false
                         let img=result[0].mime+";charset=utf-8;base64,"+result[0].base64
+                        mask=await gyre.imageAPI.convertTransparentToWhite(img)
                         tmpMask= await gyre.imageAPI.setColorPreserveAlpha(img,255,0,0)
                         segImage=result[1].mime+";charset=utf-8;base64,"+result[1].base64
                         tool_layer.componentToolbar.showImageButtons=true
