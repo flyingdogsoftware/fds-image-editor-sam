@@ -107,7 +107,8 @@
                     ref: newLayer.id,
                     refType: "moveTool",
                     visible: true,
-                    id: gyre.layerManager.maxId()+1
+                    id: gyre.layerManager.maxId()+1,
+                    url: tmpMask
                 }   
                 newLayerMask=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayerMask)
                 newLayer.children=[newLayerMask]
