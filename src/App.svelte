@@ -83,25 +83,33 @@
             if (!gyre.openDialog) return;
             gyre.openDialog("fds-image-editor-sam box",formData,"Settings",(newData) => {formData=newData })
         }
-        if (type==="setMask" && tmpMask) {      // set (inpainting) default mask
+    /*    if (type==="setMask" && tmpMask) {      // set (inpainting) default mask
             gyre.maskManager.loadMask(tmpMask)
-        }
-        if (type==="loadImage" && segImage) {   // add new image layer here
-            
-            let newLayer = {
+        }*/
+        if (type==="loadImage" && tmpMask) {   // add new image layer here
+            let selLayer=gyre.paletteValues.selectedLayer
+            let newLayer = {            // linked clone
                 type: 'image',
-                name: 'AutoMatte',
-                x: 0,
-                y: 0,
-                width: gyre.canvas.width,
-                height: gyre.canvas.height,
-                url: segImage
+                name: "👤 "+selLayer.name,
+                ref: selLayer.id,
+                visible: true
             }
             newLayer=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayer)
+
+
             if (!gyre.layerManager) {
                 alert("Only avalaible in main app")
             } else {
-                gyre.layerManager.addLayer(newLayer)     
+                gyre.layerManager.addLayer(newLayer)    
+                let newLayerMask = {
+                    type: "mask",
+                    ref: newLayer.id,
+                    refType: "moveTool",
+                    visible: true,
+                    id: gyre.layerManager.maxId()+1
+                }   
+                newLayerMask=gyre.createLayerInstance(newLayer.name, newLayer.type, newLayer)
+                newLayer.children=[newLayerMask]
                 gyre.refresh()
             }
 

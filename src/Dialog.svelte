@@ -102,16 +102,7 @@ export function refresh() {
    >
        New Layer
    </fds-image-editor-button>     
-       <!-- svelte-ignore a11y-click-events-have-key-events -->
-       <fds-image-editor-button
-       style="margin-left:10px"
-       type="button"
-       on:click={() => {
-           tool_layer.component.action('setMask')
-       }}
-   >
-       Set Mask
-   </fds-image-editor-button>        
+    
     {/if}
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <fds-image-editor-button
