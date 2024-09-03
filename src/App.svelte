@@ -87,7 +87,7 @@
     /*    if (type==="setMask" && tmpMask) {      // set (inpainting) default mask
             gyre.maskManager.loadMask(tmpMask)
         }*/
-        if (type==="loadImage" && tmpMask) {   // add new image layer here
+        if (type==="loadImage" && mask) {   // add new image layer here
             let selLayer=gyre.paletteValues.selectedLayer
             let newLayer = {            // linked clone
                 type: 'image',
@@ -153,7 +153,24 @@
             let callback_finished = async (result) => {
                         showProgress=false
                         let img=result[0].mime+";charset=utf-8;base64,"+result[0].base64
-                        mask=await gyre.imageAPI.convertTransparentToWhite(img)
+                        mask= await gyre.imageAPI.setColorPreserveAlpha(img,0,0,0)
+
+
+                       mask=await gyre.imageAPI.convertTransparentToWhite(mask)
+
+                       mask=await gyre.imageAPI.processImage(mask, (data, i) => {
+                            if (data[i]) {
+                                data[i] = 0 // Red channel
+                                data[i + 1] = 0 // Green channel
+                                data[i + 2] = 0 // Blue channel
+                            } else {
+                                data[i] = 255
+                                data[i + 1] = 255
+                                data[i + 2] = 255
+                            }
+                       })
+
+
                         tmpMask= await gyre.imageAPI.setColorPreserveAlpha(img,255,0,0)
                         segImage=result[1].mime+";charset=utf-8;base64,"+result[1].base64
                         tool_layer.componentToolbar.showImageButtons=true
