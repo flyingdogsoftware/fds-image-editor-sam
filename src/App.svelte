@@ -91,7 +91,7 @@
             let selLayer=gyre.paletteValues.selectedLayer
             let newLayer = {            // linked clone
                 type: 'image',
-                name: "👤 "+selLayer.name,
+                name: "⬤ "+selLayer.name,
                 ref: selLayer.id,
                 visible: true
             }
