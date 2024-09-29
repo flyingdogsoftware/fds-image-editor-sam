@@ -29,13 +29,21 @@
     })
     let canvas
     let canvasWidthZoomed,canvasHeightZoomed
-
+    let imageInfo={}
     export function refresh() {
-        if (!globalThis.gyre || !globalThis.gyre.canvas) return
-        canvas=globalThis.gyre.canvas             // canvas API
-        let dragDrop=globalThis.gyre.dragDrop   // Drag & Drop API        
+        let gyre=globalThis.gyre
+        if (!gyre || !gyre.canvas) return
+        if (!gyre.paletteValues.selectedLayer) return
+        let layer=gyre.paletteValues.selectedLayer
+        canvas=gyre.canvas             // canvas API
+        let dragDrop=gyre.dragDrop   // Drag & Drop API        
         canvasWidthZoomed=canvas.calcPosition(canvas.width)        
         canvasHeightZoomed=canvas.calcPosition(canvas.height)  
+        imageInfo.x=canvas.calcPosition(layer.x)     
+        imageInfo.y=canvas.calcPosition(layer.y)     
+        imageInfo.width=canvas.calcPosition(layer.width)     
+        imageInfo.height=canvas.calcPosition(layer.height)     
+
         if (tool_layer.points) {
             for (let point of tool_layer.points) {
                 point._x = canvas.calcPosition(point.x)
@@ -129,9 +137,13 @@
                 if (callbacktype==="getFile" && name==="json_file") {
                     let json
                     if (globalThis.gyre.selectedTool.subTool  !== 'points') {
-                        json={boxes:[{x:tool_layer.x,y:tool_layer.y,w:tool_layer.width,h:tool_layer.height}]}
+                        json={boxes:[{x:tool_layer.x-imageInfo.x,y:tool_layer.y-imageInfo.y,w:tool_layer.width,h:tool_layer.height}]}
                     } else {
                         json={points:tool_layer.points}
+                        for (let i=0;i<json.length;i++) {
+                            json[i].x-=imageInfo.x
+                            json[i].y-=imageInfo.y
+                        }
                     }
                     return JSON.stringify(json)
                 }                
@@ -211,13 +223,13 @@
         on:click={addLOIPoint}
     >
     {#if showProgress}<fds-image-editor-progress-bar></fds-image-editor-progress-bar>{/if}
-    {#if tmpMask && !tool_layer.previewResult}
+    {#if tmpMask && !tool_layer.previewResult} <!-- deactivated right now -->
         <!-- svelte-ignore a11y-missing-attribute -->
         <img src={tmpMask}  style="width:{canvasWidthZoomed}px;height:{canvasHeightZoomed}px;" class="mask" draggable="false">
     {/if}
     {#if segImage  && tool_layer.previewResult}
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src={segImage}  style="width:{canvasWidthZoomed}px;height:{canvasHeightZoomed}px;"  draggable="false">
+        <img src={segImage}  style="width:{imageInfo.width}px;height:{imageInfo.height}px;left:{imageInfo.left}px;top:{imageInfo.top}px;position:absolute"  draggable="false">
     {/if}
     {#if tool_layer.subTool !== 'points'}
     <div class="selectionOuter" bind:this={tool_layer.element}
