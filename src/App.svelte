@@ -223,9 +223,9 @@
         on:click={addLOIPoint}
     >
     {#if showProgress}<fds-image-editor-progress-bar></fds-image-editor-progress-bar>{/if}
-    {#if tmpMask && !tool_layer.previewResult} <!-- deactivated right now -->
+    {#if tmpMask && !tool_layer.previewResult} 
         <!-- svelte-ignore a11y-missing-attribute -->
-        <img src={tmpMask}  style="width:{canvasWidthZoomed}px;height:{canvasHeightZoomed}px;" class="mask" draggable="false">
+        <img src={tmpMask}  style="width:{imageInfo.width}px;height:{imageInfo.height}px;left:{imageInfo.left}px;top:{imageInfo.top}px;" class="mask" draggable="false">
     {/if}
     {#if segImage  && tool_layer.previewResult}
         <!-- svelte-ignore a11y-missing-attribute -->
@@ -317,6 +317,7 @@
 
     .mask {
         opacity: 0.5;
+        position:absolute;
     }
 
     .checkerBoard {
